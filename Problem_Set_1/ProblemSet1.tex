@@ -1,0 +1,254 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+\newtheorem{Question}{Question}
+\newtheorem{Algorithm}{Algorithm}
+\newtheorem{claim}{claim}
+\graphicspath{ {images/} } %\includegraphics{name}
+
+\usepackage{geometry}
+\geometry{letterpaper, portrait, margin=1in}
+
+\title {Design and Analysis of Algorithms Assignment 1}
+\author{Harrison Lee}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{Question} %1
+\begin{description}
+"Bottleneck" Nodes in a Graph
+\end{description}
+\end{Question}
+
+Claim: Given two nodes, $s$ and $t$, in $n$-node indirected graph $G = (V, E)$ with a distance greater than $n/2$, there exists some node $v$ not equal to either $s$ or $t$ that, when deleted, destroys all paths from $s$ to $t$.
+
+
+
+%Claim: Every $n \in \mathbb{N} > 1$ is divisible by a prime $P_k$, where $P_k$ represents a prime number.
+%$P(n): \exists P_k, m \in \mathbb{N} : n = P_k *m$ for all $n \in \mathbb{N}$
+
+\begin{proof}
+\begin{description}
+
+A path of distance greater than $n/2$ takes $n/2 + 1$ nodes at least. Excluding $s$ and $t$ this is $(n-2)/2 + 1= n/2$ nodes. Let's call this path "path $A$".
+
+For node $v$ to be deletable without destroying the other path, path $B$, $v$ cannot be in $B$.
+
+$B$ must also have a distance greater than $n/2$ to maintain $s$ and $t$s' distance.
+
+$B$ cannot share nodes with $A$ other than $s$ and $t$ and requires $n/2$ nodes unique from $A$.
+
+There are only $n-2$ non-$s$ or non-$t$ nodes, but $A$ and $B$ require a total of $n$ unique nodes, so $B$ cannot exist.
+
+
+%\item [Base Case:]$P(2): 2 = 2 * 1$, 2 is a prime number.
+%Assume $P(1) \wedge P(2) \wedge \ldots \wedge P(n)$
+%\item Prove $P(1) \wedge P(2) \wedge \ldots \wedge P(n) \rightarrow P(n+1)$:
+%Case 1: $n+1$ is a prime number.
+%Every number is divisible by itself, which in this case is a prime number. Therefore $P(n+1)$ is true.
+%Case 2: $n+1 = x * y$, where $x, y < n$.
+%$P(x), P(y)$ are assumed to be true, and have prime factors.
+%$n+1$ has the same factors.
+%Therefore, by induction, $P(n+1)$ is true $\forall n > 1$.
+\end{description}
+\end{proof}
+
+\begin{Algorithm}
+\begin{description}
+Find node v
+\end{description}
+\end{Algorithm}
+
+Begin with a Depth-First-Search, as written in the textbook. Use it to find the shortest path from $s$ to $t$.
+
+Mark all nodes discovered in that shortest path as "Used", numbering them by their distance to $t$.
+
+Repeat Depth-First-Search, starting from $s$, but do not traverse past "Used" nodes. Instead, mark them as "Re-Found". Save whichever "Re-Found" node that is closest to $t$.
+
+Once Depth-First-Search fails and cannot continue, return the saved "Re-Found" node as $v$.
+
+\begin{proof}
+\begin{description}
+Prove this algorithm is $O(n+m)$:
+
+ Depth-First-Search is known to be $O(n+m)$, as noted in the textbook. Each edge and node is traversed at most once.
+
+This algorithm conducts Depth-First-Search twice.
+
+This algorithm is $O(2n+2m)$, which is close enough to $O(n+m)$ for our purposes.
+
+\end{description}
+\end{proof}
+
+
+
+\begin{Question} %2
+\end{Question}
+
+Claim: $P(n): n=p_1 * p_2 * \ldots p_k \forall n > 1$, where $p$ is a prime number.
+
+\begin{proof}
+\begin{description}
+\item[Base Case:] $P(2) = 2*1$
+
+Assume $P(1) \wedge P(2) \wedge \ldots \wedge P(n)$
+
+\item Prove $P(1) \wedge P(2) \wedge \ldots \wedge P(n) \rightarrow P(n+1)$
+
+\underline{Case 1:} If $n+1$ is a prime number, it is divisible by itself and 1, so $P(n+1) = T$ if $n+1$ is prime.
+
+\underline{Case 2:} Otherwise, if $n+1$ is not prime, then $n+1 = x * y$.
+
+$x,y < n$ and $P(x), P(y) = T$, each with their own factors.
+
+By recursively finding the factors of $P(x)$ and $P(y)$, which would then be factors to $P(n)$ as well. %INCOMPLETE, finish and format; recursive definition?
+
+Therefore $P(n+1)$ is true, and $P(n) = T \forall n > 1$.
+\end{description}
+\end{proof}
+
+
+\begin{Question} %3
+\end{Question}
+
+Claim: $\sum_{i=1}^n \dfrac{1}{\sqrt{i}} \geq \sqrt{n}$
+
+\begin{proof}
+\begin{description}
+\item[Base Case:] $P(1): 1 \geq \sqrt{1}$
+
+Assume $\sum_{i=1}^n \dfrac{1}{\sqrt{i}} \geq \sqrt{n}$
+
+\item[Prove $P(n) \rightarrow P(n+1)$:] Suppose $P(n)$ is true for $n=k$. When $n=k+1$ we have.
+
+$\sum_{i=1}^{n+1} \dfrac{1}{\sqrt{i} } \geq \sqrt{n+1}$
+
+$\sum_{i=1}^{n} \dfrac{1}{\sqrt{i}} + \dfrac{1}{\sqrt{n+1}} \geq \sqrt{n+1}$
+
+$\sum_{i=1}^{n} \dfrac{1}{\sqrt{i}} * \sqrt{n+1} + 1 \geq n+1$
+
+$\sum_{i=1}^{n} \dfrac{1}{\sqrt{i}} * \sqrt{n+1} \geq n$
+
+$\sum_{i=1}^{n} \dfrac{1}{\sqrt{i}} * \sqrt{n+1} \geq \sqrt{n} * \sqrt{n+1} \geq n$ %sanity check this
+
+$\sqrt{n} * \sqrt{n+1} \geq \sqrt{n} * \sqrt{n}$
+
+$\sqrt{n+1} \geq \sqrt{n}$
+
+%$n+1 \geq n$; this is always true for $n \geq 1$.
+
+Therefore, by induction, $P(n+1)$ is true $\forall n \geq 1$.
+\end{description}
+\end{proof}
+
+
+\begin{Question} %4
+\end{Question}
+
+Claim: $x^n + \dfrac{1}{x^n}$ is an integer, given $x+\dfrac{1}{x}$ is an integer and $\forall n \geq 1$
+
+\begin{proof}
+\begin{description}
+\item[Base Case:] $P(1): x^1 + \dfrac{1}{x^1} \in \mathbb{Z}$; $P(0): x^0 + \dfrac{1}{x^0} = 1+1 \in \mathbb{Z}$
+\item Assume $x^n + \dfrac{1}{x^n} \in \mathbb{Z}$ is true for $n=1$ and $n=0$
+
+\item[Prove $P(n)\wedge P(n-1) \wedge P(1) \rightarrow P(n+1)$:] Assume $P(n)$ and $P(n-1)$. Prove for all other cases by induction.
+
+$x^{n+1} + \dfrac{1}{x^{n+1}}$
+
+$ = x*x^n + \dfrac{1}{x*x^n}$
+ 
+%$(x^n + \dfrac{1}{x^n}) * (x+\dfrac{1}{x}) = x^{n+1} + \dfrac{1}{x^{n+1}} + x^{n-1} + \dfrac{1}{x^{n-1}}$
+
+$= (x^n + \dfrac{1}{x^n}) * (x+\dfrac{1}{x}) - (x^{n-1} + \dfrac{1}{x^{n-1}})$
+
+Explanation: \{ $(x^n + \dfrac{1}{x^n}) * (x+\dfrac{1}{x}) = (x^{n+1} + \dfrac{1}{x^{n+1}}) + (x^{n-1} + \dfrac{1}{x^{n-1}})$ \}
+
+Integers multiplied together or subtracted from by an integer creates another integer.
+
+Therefore $P(n)$ is true for all $n$
+\end{description}
+\end{proof}
+
+
+\begin{Question} %5 - impossible for two people to win over everyone else; assume everyone plays each other, and one of them wins or loses
+%all connected; all wins/losses only at ends of line; if have atleast one win/loss, then linked to others
+%each shape is made of earlier shapes, then connected together - internal shape will have an order, and when connecting there must be another order added; in front of or behind of
+\end{Question}
+
+ Here is a definition of a round-robin tournament.
+
+(1) Base Case: $P(2):$ Two nodes are connected by one arrow, a win or a loss. %These two nodes can easily be lined up.
+
+(2) Constructor Rule: When a node is added, it is given either a win or a loss with every other node.
+
+%(3) These are the only cases contained in this function.
+
+P(n): A network with $n$ nodes in our recursive definition can be sorted linearly so that every node lost to the node ahead of it while winning to the one before it.
+
+\begin{proof}
+\begin{description}
+\item[Base Case:] P(2): The two nodes can be sorted, with the one that won in the front of the line while the other node is behind it.
+
+\item[Prove $P(n) \rightarrow P(n+1)$:] Assume $P(n) = T$, with a working linear order of nodes. %structural induction
+
+\underline{Case 1:} The newly added node has only wins.
+
+It can be placed in front of all other nodes in the line. $P(n)$ will define the order of all other nodes in the line behind the new node.
+
+\underline{Case 2:} The newly added node has only losses.
+
+It can be placed behind all other nodes in the $P(n)$ line.
+
+\underline{Case 3:} The new node has both wins and losses.
+\iffalse
+There can be at most one node with all wins and one node with all losses, as all nodes are connected.
+The all wins and all losses nodes will, respectively, be at the front and back of the line.
+All other nodes have both wins and losses with every other node. No node can be isolated.
+Each group of nodes $k < n$ has a corresponding $P(k)$ line. Removing \fi
+
+Temporarily ignore one of the nodes with the most losses.
+
+The remaining nodes can create a $P(n)$ line. Pick a line where the removed node lost to the last node.
+
+The node with the most losses can be added to the end of this line.
+
+Therefore, by induction, $P(n) = T \forall n \in \mathbb{N}$
+
+\end{description}
+\end{proof}
+
+\end{document}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

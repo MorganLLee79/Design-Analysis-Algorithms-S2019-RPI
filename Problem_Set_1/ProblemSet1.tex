@@ -79,7 +79,7 @@ This algorithm is $O(2n+2m)$, which is close enough to $O(n+m)$ for our purposes
 \noindent Find: An order for the contestants to start that minimizes the time it takes for all the contestants to complete the triathlon. 
 
 \begin{Algorithm}
-Contestants start in the order of descending $b_i + r_i$
+Contestants start in the order of descending $b_i + r_i$. This is $O(n \cdot log(n))$ (sorting)
 \end{Algorithm}
 
 \begin{proof}

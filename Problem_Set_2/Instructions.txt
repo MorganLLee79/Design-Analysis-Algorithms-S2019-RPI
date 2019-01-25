@@ -1,0 +1,38 @@
+4.9) (p.192) One of the basic motivations behind the Minimum Spanning Tree Problem
+is the goal of designing a spanning network for a set of nodes with
+minimum total cost. Here we explore another type of objective: designing
+a spanning network for which the most expensive edge is as cheap as
+possible. ((Make biggest edge in tree as small as possible?))
+	Specifically, let G = (V, E) be a connected graph with n vertices, m
+edges, and positive edge costs that you may assume are all distinct. Let
+T = (V, E) be a spanning tree of G; we define the bottleneck edge of T to
+be the edge of T with the greatest cost. ((Largest edge == "bottleneck" here))
+	A spanning tree T of G is a minimum-bottleneck spanning tree if there
+is no spanning tree T of G with a cheaper bottleneck edge.
+(a) Is every minimum-bottleneck tree of G a minimum spanning tree of
+G? Prove or give a counterexample.
+(b) Is every minimum spanning tree of G a minimum-bottleneck tree of
+G? Prove or give a counterexample.
+
+
+6.11) (p.323) Suppose you’re consulting for a company that manufactures PC equipment and ships it to distributors all over the country. For each of the
+next n weeks, they have a projected supply si of equipment (measured in
+pounds), which has to be shipped by an air freight carrier.
+Each week’s supply can be carried by one of two air freight companies,
+A or B.
+. Company A charges a fixed rate r per pound (so it costs r · si to ship
+a week’s supply si).
+. Company B makes contracts for a fixed amount c per week, independent of the weight. However, contracts with company B must be made
+in blocks of four consecutive weeks at a time.
+A schedule, for the PC company, is a choice of air freight company
+(A or B) for each of the n weeks, with the restriction that company B,
+whenever it is chosen, must be chosen for blocks of four contiguous
+weeks at a time. The cost of the schedule is the total amount paid to
+company A and B, according to the description above.
+Give a polynomial-time algorithm that takes a sequence of supply
+values s1, s2,..., sn and returns a schedule of minimum cost.
+Example. Suppose r = 1, c = 10, and the sequence of values is
+11, 9, 9, 12, 12, 12, 12, 9, 9, 11.
+Then the optimal schedule would be to choose company A for the first
+three weeks, then company B for a block of four consecutive weeks, and
+then company A for the final three weeks.

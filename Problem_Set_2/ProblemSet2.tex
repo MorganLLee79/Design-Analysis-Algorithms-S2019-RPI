@@ -1,0 +1,100 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{mathtools}
+
+\newtheorem{Question}{Question}
+\newtheorem{Algorithm}{Algorithm}
+\newtheorem{claim}{claim}
+\graphicspath{ {images/} } %\includegraphics{name}
+
+\usepackage{geometry}
+\geometry{letterpaper, portrait, margin=1in}
+
+\title {Design and Analysis of Algorithms Assignment 2}
+\author{Harrison Lee, Alex Zhao}
+\date{January 25, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{Question} (4.9) Greedy Algorithm
+\end{Question}
+
+Claim: Given two nodes, $s$ and $t$, in $n$-node undirected graph $G = (V, E)$ with a distance greater than $n/2$, there exists some node $v$ not equal to either $s$ or $t$ that, when deleted, destroys all paths from $s$ to $t$.
+
+\begin{proof}
+\begin{description}
+
+A path of distance greater than $n/2$ takes $n/2 + 1$ nodes at least. Excluding $s$ and $t$ this is $(n-2)/2 + 1= n/2$ nodes. Let's call this path "path $A$".
+
+For node $v$ to be deletable without destroying the other path, path $B$, $v$ cannot be in $B$.
+
+$B$ must also have a distance greater than $n/2$ to maintain $s$ and $t$s' distance.
+
+$B$ cannot share nodes with $A$ other than $s$ and $t$ and requires $n/2$ nodes unique from $A$.
+
+There are only $n-2$ non-$s$ or non-$t$ nodes, but $A$ and $B$ require a total of $n$ unique nodes, so $B$ cannot exist.
+
+\end{description}
+\end{proof}
+
+\begin{Algorithm}
+\begin{description}
+Find node v
+\end{description}
+\end{Algorithm}
+
+Begin with a Depth-First-Search, as written in the textbook. Use it to find the shortest path from $s$ to $t$.
+
+Mark all nodes discovered in that shortest path as "Used", numbering them by their distance to $t$.
+
+Repeat Depth-First-Search, starting from $s$, but do not traverse past "Used" nodes. Instead, mark them as "Re-Found". Save whichever "Re-Found" node that is closest to $t$.
+
+Once Depth-First-Search fails and cannot continue, return the saved "Re-Found" node as $v$.
+
+\begin{proof}
+\begin{description}
+Prove this algorithm is $O(n+m)$:
+
+ Depth-First-Search is known to be $O(n+m)$, as noted in the textbook. Each edge and node is traversed at most once.
+
+This algorithm conducts Depth-First-Search twice.
+
+This algorithm is $O(2n+2m)$, which is close enough to $O(n+m)$ for our purposes.
+
+\end{description}
+\end{proof}
+
+\newpage
+
+\begin{Question} (6.11) Dynamic Programming
+\end{Question}
+\noindent Given: You have $n$ weeks and $s_i$ parts to be produced each of those weeks. You must decide between two shipping companies, Company A which charges $r * s$ to ship in a given week while Company B charges $c$ each week in blocks of four consecutive weeks.\\
+
+\noindent Find: A schedule deciding between company A or B for each of those n weeks while following company B's restrictions. Cost is the amount paid in shipping costs. \\
+
+\noindent Give a polynomial time algorithm that takes a sequence of supply values, $s_1, s_2, \ldots , s_n$ and returns a schedule of minimum cost.
+
+\begin{Algorithm}
+Find the optimal schedule.
+\end{Algorithm}
+
+\begin{proof}
+\begin{description}
+Suppose there is an optimal schedule where contestants are not ordered by descending $b_i + r_i$. That means there exists at least one "inversion" where $c_i$ starts before $c_j$ but $b_i+r_i \leq b_j+r_j$. Swapping this inversion will not increase the time it takes for all contestants to complete the triathlon.
+
+After the swap, $c_j$ will finish earlier because they enter and leave the pool earlier, meaning they do not increase the overall completion time.
+
+After the swap, $c_i$ will finish swimming at the same time $c_j$ would have finished before the swap (this is because total swimming time of all the contestants up to and including $c_j$ before the swap is still equal to the total swimming time of all the contestants up to and including $c_i$ after the swap. Because $b_i+r_i \leq b_j+r_j$, $c_i$ will not finish running later than $c_j$ would have before the swap.
+
+Therefore, swapping an inversion does not increase the time increase the time it takes for all contestants to complete the triathlon, meaning we can continue to swap these inversions until there are no inversions remaining and the ordering of contestants in the optimal solution is the same as the one given by our algorithm. 
+\end{description}
+\end{proof}
+
+
+\end{document}  

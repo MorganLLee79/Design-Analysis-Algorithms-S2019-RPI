@@ -6,6 +6,8 @@
 \usepackage{graphicx}
 \usepackage{mathtools}
 
+\usepackage{stackengine}
+
 \newtheorem{Question}{Question}
 \newtheorem{Algorithm}{Algorithm}
 \newtheorem{claim}{claim}
@@ -76,7 +78,7 @@ This algorithm is $O(2n+2m)$, which is close enough to $O(n+m)$ for our purposes
 \end{Question}
 \noindent Given: You have $n$ weeks and $s_i$ parts to be produced each of those weeks. You must decide between two shipping companies, Company A which charges $r * s$ to ship in a given week while Company B charges $c$ each week in blocks of four consecutive weeks.\\
 
-\noindent Find: A schedule deciding between company A or B for each of those n weeks while following company B's restrictions. Cost is the amount paid in shipping costs. \\
+\noindent Find: A schedule deciding between company A or B for each of those $n$ weeks while following company B's restrictions. Cost is the amount paid in shipping costs. \\
 
 \noindent Give a polynomial time algorithm that takes a sequence of supply values, $s_1, s_2, \ldots , s_n$ and returns a schedule of minimum cost.
 
@@ -86,15 +88,53 @@ Find the optimal schedule.
 
 \begin{proof}
 \begin{description}
-Suppose there is an optimal schedule where contestants are not ordered by descending $b_i + r_i$. That means there exists at least one "inversion" where $c_i$ starts before $c_j$ but $b_i+r_i \leq b_j+r_j$. Swapping this inversion will not increase the time it takes for all contestants to complete the triathlon.
 
-After the swap, $c_j$ will finish earlier because they enter and leave the pool earlier, meaning they do not increase the overall completion time.
+Subproblems: $OPT(j)$, or the optimal schedule from week 0 to week $j$. This can be expanded from week 4 to week n.
 
-After the swap, $c_i$ will finish swimming at the same time $c_j$ would have finished before the swap (this is because total swimming time of all the contestants up to and including $c_j$ before the swap is still equal to the total swimming time of all the contestants up to and including $c_i$ after the swap. Because $b_i+r_i \leq b_j+r_j$, $c_i$ will not finish running later than $c_j$ would have before the swap.
+Recurrence: $OPT(j) = min \{\stackanchor{$r * s_j + OPT(j-1)$}{$4 * c + OPT(j-4)$}$, where $OPT(j)$ represents the optimal shipping costs possible from week 0 to week $j$. $r, s,$ and $c$ are as defined in the problem, referring to company A's cost per weight unit, total weight during week $j$, and company B's cost per week respectively.
 
-Therefore, swapping an inversion does not increase the time increase the time it takes for all contestants to complete the triathlon, meaning we can continue to swap these inversions until there are no inversions remaining and the ordering of contestants in the optimal solution is the same as the one given by our algorithm. 
+Full Algorithm: 
+
+OPT[0, 1, 2, 3] = [0, $s_1 * r, s_1*r + s_2 * r, s_1*r + s_2*r + s_3*r$]
+
+for j = 0, j $\leq$ n, j++
+
+	\quad if $OPT[j - 4] + 4*c < OPT[j-1] + r*s_j$
+
+	\quad \quad 	$OPT[j] = OPT[j-4] + 4 * c$
+
+	\quad else:
+
+	\quad \quad  $OPT[j] = OPT[j-1] + r*s_j$
+
+$return OPT[n]$
+
+Running Time: $O(n)$. Each week is traversed once, while two already calculated $OPT(j)$s are accessed, $OPT(j-1)$ and $OPT(j-4)$, each week.
+
 \end{description}
 \end{proof}
 
 
 \end{document}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,10 +1,11 @@
-\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\documentclass[11pt, oneside]{article}
 \usepackage{amsfonts}
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{setspace}
 \usepackage{graphicx}
 \usepackage{mathtools}
+\usepackage{tikz}
 
 \usepackage{stackengine}
 
@@ -18,59 +19,70 @@
 
 \title {Design and Analysis of Algorithms Assignment 2}
 \author{Harrison Lee, Alex Zhao}
-\date{January 25, 2019}
+\date{February 1, 2019}
 
 \begin{document}
 
 \maketitle
 
-\begin{Question} (4.9) Greedy Algorithm
+\begin{Question} (4.9)
+\renewcommand{\theenumi}{\alph{enumi}}
+\begin{enumerate}
+\item A MBST is not always a MST\par
+Given G:\par
+\begin{tikzpicture}[auto, node distance=2cm, every loop/.style={},
+                    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+  \node[main node] (1) {a};
+  \node[main node] (2) [below right of=1] {b};
+  \node[main node] (3) [below left of=2] {c};
+  \node[main node] (4) [right of=2] {d};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (1) edge node {1} (3)
+    (2) edge node [right] {2} (1)
+        edge node {4} (4)
+    (3) edge node [right] {3} (2);
+\end{tikzpicture}
+\par
+A MBST of G is:
+\par
+\begin{tikzpicture}[auto, node distance=2cm, every loop/.style={},
+                    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+  \node[main node] (1) {a};
+  \node[main node] (2) [below right of=1] {b};
+  \node[main node] (3) [below left of=2] {c};
+  \node[main node] (4) [right of=2] {d};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (1) edge node {1} (3)
+    (2) edge node {4} (4)
+    (3) edge node [right] {3} (2);
+\end{tikzpicture}
+\par
+The MST of G is:
+\par
+\begin{tikzpicture}[auto, node distance=2cm, every loop/.style={},
+                    thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+  \node[main node] (1) {a};
+  \node[main node] (2) [below right of=1] {b};
+  \node[main node] (3) [below left of=2] {c};
+  \node[main node] (4) [right of=2] {d};
+
+  \path[every node/.style={font=\sffamily\small}]
+    (1) edge node {1} (3)
+    (2) edge node [right] {2} (1)
+        edge node {4} (4);
+\end{tikzpicture}
+
+\item A MST is always a MBST\par
+Let T be the MST of graph G. Assume that T is not the MBST $T'$ of G. That means that there is a bottleneck edge e in T not in $T'$ that is heavier than the bottleneck edge b of $T'$ (all edge weights are distinct). This means that e is heavier than every edge in $T'$. By adding e to $T'$, we create a cycle where e is the heaviest edge in this cycle. By the cycle property, this edge cannot be part of any MST. This is a contradiction. Therefore, our assumption was false and T must be a MBST. 
+\end{enumerate}
+
+
 \end{Question}
-
-Claim: Given two nodes, $s$ and $t$, in $n$-node undirected graph $G = (V, E)$ with a distance greater than $n/2$, there exists some node $v$ not equal to either $s$ or $t$ that, when deleted, destroys all paths from $s$ to $t$.
-
-\begin{proof}
-\begin{description}
-
-A path of distance greater than $n/2$ takes $n/2 + 1$ nodes at least. Excluding $s$ and $t$ this is $(n-2)/2 + 1= n/2$ nodes. Let's call this path "path $A$".
-
-For node $v$ to be deletable without destroying the other path, path $B$, $v$ cannot be in $B$.
-
-$B$ must also have a distance greater than $n/2$ to maintain $s$ and $t$s' distance.
-
-$B$ cannot share nodes with $A$ other than $s$ and $t$ and requires $n/2$ nodes unique from $A$.
-
-There are only $n-2$ non-$s$ or non-$t$ nodes, but $A$ and $B$ require a total of $n$ unique nodes, so $B$ cannot exist.
-
-\end{description}
-\end{proof}
-
-\begin{Algorithm}
-\begin{description}
-Find node v
-\end{description}
-\end{Algorithm}
-
-Begin with a Depth-First-Search, as written in the textbook. Use it to find the shortest path from $s$ to $t$.
-
-Mark all nodes discovered in that shortest path as "Used", numbering them by their distance to $t$.
-
-Repeat Depth-First-Search, starting from $s$, but do not traverse past "Used" nodes. Instead, mark them as "Re-Found". Save whichever "Re-Found" node that is closest to $t$.
-
-Once Depth-First-Search fails and cannot continue, return the saved "Re-Found" node as $v$.
-
-\begin{proof}
-\begin{description}
-Prove this algorithm is $O(n+m)$:
-
- Depth-First-Search is known to be $O(n+m)$, as noted in the textbook. Each edge and node is traversed at most once.
-
-This algorithm conducts Depth-First-Search twice.
-
-This algorithm is $O(2n+2m)$, which is close enough to $O(n+m)$ for our purposes.
-
-\end{description}
-\end{proof}
 
 \newpage
 
@@ -116,25 +128,3 @@ Running Time: $O(n)$. Each week is traversed once, while two already calculated 
 
 
 \end{document}  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

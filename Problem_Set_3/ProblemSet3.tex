@@ -76,50 +76,34 @@ $return$ $OPT[n], segmentations$
 \end{proof}
 
 \newpage
-
-\begin{Question} (6.28) Scheduling ((un-)Weighted Interval Scheduling? Lecture 25Jan2019; nope, nvm. Job start times can be defined. More like knapsack then? Except limitations by deadline, added parameter to knapsack's size limits)
+\linespread{1.1}
+\begin{Question} (6.28) 
+\renewcommand{\theenumi}{\alph{enumi}}
+\begin{enumerate}
+\item Every job in J can be completed before its deadline by definition, meaning there is a schedule where the max lateness is 0 Ordering by increasing deadline produces a schedulable set that minimizes max lateness (proven in class). Using this order will create a schedule that has max lateness 0 (we know that is the minimum max lateness). Therefore, there is a schedule for J where the jobs are ordered by increasing deadline. 
+\item Let the jobs be ordered by increasing deadline (we know J can have this ordering from part a. \par
+Simple observation: \par
+Given n jobs, the last job $j_n$ is either in J or not in J. If $j_n$ is in J, then the optimal solution is the optimal solution when given all the earlier jobs and a new maximum deadline D of the start time of $j_n$ (either $D-t_n$ or $d_n-t_n$, whichever is earlier). If $j_n$ is not in J, then the optimal solution is just the optimal solution given all the earlier jobs and the same max deadline. \par
+Subproblems: \par
+$OPT[i, d]$ is the optimum solution given jobs from 1 to i where no job can run past deadline d. \par
+Recurrence: \par
+$OPT[i, d]=max\left \{
+  \begin{array}{l}
+  OPT[i-1,d] \\
+  OPT[i-1, min(d,d_n)-t_i] + 1
+  \end{array}
+  \right.
+$\par
+Either you don't take $j_i$ in which case J doesn't get any bigger and you look at the subproblem without $j_i$ and the same max deadline, or you take $j_i$ in which case J becomes 1 bigger and you look at the subproblem without $j_i$ and a the new earlier max deadline. \par
+Full Algorithm:\par
+$OPT[0,d]=0, OPT[i,0]=0$ (can't have any jobs in J without any jobs, or without any time) \par
+You can fill in the table in any order (row by row, column by column, diagonally) and you can only choose to take $j_i$ if $d_i$ does not exceed $d$. \par
+The final solution is $OPT[n,d_n]$. \par
+The runtime for this algorithm is $O(n\cdot d)$ (there are $n \cdot d$ subproblems and each subproblem looks at a constant number of subproblems. 
+\end{enumerate}
 \end{Question}
-\noindent Given: You have $n$ weeks and $s_i$ parts to be produced each of those weeks. You must decide between two shipping companies, Company A which charges $r * s$ to ship in a given week while Company B charges $c$ each week in blocks of four consecutive weeks.\\
-
-\noindent Find: A schedule deciding between company A or B for each of those $n$ weeks while following company B's restrictions. Cost is the amount paid in shipping costs. \\
-
-\noindent Give a polynomial time algorithm that takes a sequence of supply values, $s_1, s_2, \ldots , s_n$ and returns a schedule of minimum cost.
-
-\begin{Algorithm}
-Find the optimal schedule.
-\end{Algorithm}
-
-\begin{proof}
-\begin{description}
-
-Subproblems: $OPT(j)$, or the optimal schedule from week 0 to week $j$. This can be expanded from week 4 to week n.
-
-Recurrence: $OPT(j) = min \{\stackanchor{$r * s_j + OPT(j-1)$}{$4 * c + OPT(j-4)$}$, where $OPT(j)$ represents the optimal shipping costs possible from week 0 to week $j$. $r, s,$ and $c$ are as defined in the problem, referring to company A's cost per weight unit, total weight during week $j$, and company B's cost per week respectively.
-
-Full Algorithm: 
-
-OPT[0, 1, 2, 3] = [0, $s_1 * r, s_1*r + s_2 * r, s_1*r + s_2*r + s_3*r$]
-
-for j = 0, j $\leq$ n, j++
-
-	\quad if $OPT[j - 4] + 4*c < OPT[j-1] + r*s_j$
-
-	\quad \quad 	$OPT[j] = OPT[j-4] + 4 * c$
-
-	\quad else:
-
-	\quad \quad  $OPT[j] = OPT[j-1] + r*s_j$
-
-$return OPT[n]$
-
-Running Time: $O(n)$. Each week is traversed once, while two already calculated $OPT(j)$s are accessed, $OPT(j-1)$ and $OPT(j-4)$, each week.
-
-\end{description}
-\end{proof}
-
 
 \end{document}  
-
 
 
 

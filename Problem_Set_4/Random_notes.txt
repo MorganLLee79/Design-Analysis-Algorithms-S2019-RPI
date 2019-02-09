@@ -1,0 +1,10 @@
+6-19)
+-Read through, match to saved spot in repeat for x or y
+	-issue of overlap
+	-save last spot for last continuation of x/y?
+	-Cancel if stopped?
+
+6-27)
+cost = p + g * cost + c * (L - i_+1) + 2c * (L - i_+2) + ... (tune for off by 1 error)
+
+-min: new order vs re-stocking

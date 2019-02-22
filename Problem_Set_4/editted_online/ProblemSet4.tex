@@ -1,0 +1,143 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+%\usepackage{setspace}
+%\usepackage{graphicx}
+%\usepackage{mathtools}
+%\usepackage{stackengine}
+
+\newtheorem{Question}{Question}
+\newtheorem{Algorithm}{Algorithm}
+\newtheorem{claim}{claim}
+\graphicspath{ {} } %\includegraphics{name}
+
+\usepackage{geometry}
+\geometry{letterpaper, portrait, margin=1in}
+
+\title {Design and Analysis of Algorithms Assignment 4}
+\author{Harrison Lee, Alex Zhao}
+\date{February 22, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{Question} (6.19) \smallskip \\
+Simple observation:  \\
+s either ends in x, y, or neither. \bigskip \\
+Subproblems: \\
+$OPT[i]$ is whether or not $s_1$ to $s_i$ is an interleaving of x and y, 1 if it is, -1 if it is not. \bigskip \\
+Recurrence: \\
+Let $l_x$, $l_y$, and $l_s$ denote the length of x, y, and s respectively. \smallskip \\
+$OPT[i]=
+\begin{cases}
+    1 &\text{if } OPT[i-l_x]=1 \text{ and } s_{i-l_x+1} \text{ to } s_i=x\\
+    1 &\text{if } OPT[i-l_y]=1 \text{ and } s_{i-l_y+1} \text{ to } s_i=y\\
+    -1 & otherwise
+\end{cases}
+$\smallskip \\
+s is an interleaving of x and y if s ends in x or y and the remaining string with that x or y removed is also a interleaving of x and y.\bigskip \\
+Full Algorithm:\\
+$OPT[i\leq 0]=-1$. Fill in the array from $OPT[1]$ to $OPT[i]$. The final solution is $OPT[l_s]$. \smallskip \\
+The runtime for this algorithm is $O(l_s)$ ($l_s$ subproblems, each one looking at a constant number of earlier subproblems). 
+\end{Question}
+
+\newpage
+\linespread{1.1}
+\begin{Question} (6.27) Gasoline Re-stocking Scheduling
+\end{Question}
+
+
+\noindent Given: Given an initially empty storage tank that can hold $L$ gallons, a price $P$ for each delivery, a cost $c$ for each day a gallon is stored, and $g_i$ gallons sold on day $i$ over $1,...,n$ days.
+
+\noindent Find: Find an algorithm to decide on a schedule for ordering gas shipments.
+
+\begin{Algorithm}
+Find the optimal schedule.
+\end{Algorithm}
+
+\begin{proof}
+\begin{description}
+
+\underline{Subproblems:} $OPT(i)$, is the optimal total expenses ordering shipments up to day $i$, ending with 0 gas.
+
+\underline{Recurrence:} $OPT(i) = min \{P + OPT(j) + \sum_{k=i-j}^{i}(k)*(k-1)/2*c*g_{k+j}$ for all days $j$ from $i-L$ to $i$
+
+%Use $t * (t-1) / 2 * c - g_{i to j}$
+
+\underline{Full Algorithm:}
+
+$OPT(0) = 0$    \quad // Base Case
+
+lastRefuelDays = [0]  \quad // Track the day of the last refuel for $OPT(index)$
+
+for i = 1, i $\leq$ n, i++  \quad //Go over each day
+
+	\quad currentBestPrice = int.max
+	
+	\quad currentBestRefuelDay = -1
+
+	\quad for j = i-L, j $\leq$ i, j++  \quad //Go over days $i-L$ to $i$. Find $OPT(j)$
+
+	\quad \quad if(j $<$ 0) j = 1 \quad // Skip invalid days
+	
+	\quad \quad currentSum = 0
+	
+	\quad \quad for k = i-j, k $\leq$ i, k++
+
+	\quad \quad \quad currentSum += $P + OPT(j) + (k)*(k-1)/2*c*g_{k+j}$
+	
+	\quad \quad if currentSum $\leq$ currentBestPrice
+
+	\quad \quad \quad currentBestPrice = currentSum
+
+	\quad \quad \quad currentBestRefuelDay = j
+
+	\quad $OPT(i)$ = currentBestPrice
+
+	\quad lastRefuelDays[i] = currentBestRefuelDay
+
+i = n
+
+refuelingSchedule = []
+
+refuelingQuantities = []
+
+while i != 0  \quad // Collect the final schedule of refueling days
+
+\quad refuelingSchedule.append(i)
+
+\quad refuelingQuantities = sum($g_{lastRefuelDays[i]}$ to $g_{i}$)
+
+\quad i = lastRefuelDays[i]
+
+$return$ $OPT(n), refuelingSchedule, refuelingQuantities$
+
+\underline{Running Time:} $O(n*L*(L*(L-1)/2))$. Each character is compared to the $OPT$ values of the previous $L$ characters, with each of these looking at the next 1 to $L$ days.
+
+\end{description}
+\end{proof}
+
+\end{document}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

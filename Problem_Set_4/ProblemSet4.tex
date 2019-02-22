@@ -24,104 +24,29 @@
 
 \maketitle
 
-\begin{Question} (6.5) Interleaved String Untangling
+\begin{Question} (6.19) \smallskip \\
+Simple observation:  \\
+s either ends in x, y, or neither. \bigskip \\
+Subproblems: \\
+$OPT[i]$ is whether or not $s_1$ to $s_i$ is an interleaving of x and y, 1 if it is, -1 if it is not. \bigskip \\
+Recurrence: \\
+Let $l_x$, $l_y$, and $l_s$ denote the length of x, y, and s respectively. \smallskip \\
+$OPT[i]=
+\begin{cases}
+    1 &\text{if } OPT[i-l_x]=1 \text{ and } s_{i-l_x+1} \text{ to } s_i=x\\
+    1 &\text{if } OPT[i-l_y]=1 \text{ and } s_{i-l_y+1} \text{ to } s_i=y\\
+    -1 & otherwise
+\end{cases}
+$\smallskip \\
+s is an interleaving of x and y if s ends in x or y and the remaining string with that x or y removed is also a interleaving of x and y.\bigskip \\
+Full Algorithm:\\
+$OPT[i\leq 0]=-1$. Fill in the array from $OPT[1]$ to $OPT[i]$. The final solution is $OPT[l_s]$. \smallskip \\
+The runtime for this algorithm is $O(l_s)$ ($l_s$ subproblems, each one looking at a constant number of earlier subproblems). 
 \end{Question}
-
-\noindent Given: A string $s$, an $interleaving$ of strings $x$ and $y$, with strings $x$ and $y$ being strings of 0s and 1s, with $x^k$ or $y^k$ representing those strings concatenated $k$ times.
-
-\noindent Find: Find an efficient algorithm that takes strings $s$, $x$, and $y$ and decides if $s$ is an interleaving of $x$ and $y$. \\
-
-\begin{Algorithm}
-Find the optimal string segmentation.
-\end{Algorithm}
-
-\begin{proof}
-\begin{description}
-
-\underline{Subproblems:} $OPT(j)$, is the total quality of the optimal segmenation from character 1 to character $j$. $Segment(i, j)$ is the segmentation from $i$ to $j$.
-
-\underline{Recurrence:} $OPT(j) = max \{OPT(i) + quality(Segment(i+1, j))$ for all $i$ from 1 to $j-1$
-
-This is similar to the answer for Segmented Least Squares Fit, as discussed in lecture. The main change needed is to replace the error function with the quality function in this problem and to maximize quality rather than minimize error.
-
-\underline{Full Algorithm:}
-
-$OPT(1) = quality(x_1)$    \quad // Base Case
-
-$segmentations = [[1]]$	 \quad // List of list of segmentation break points for each $OPT(j)$
-
-for j = 2, j $\leq$ n, j++
-
-	\quad currentQuality = $quality(Segment(1, j)$
-
-	\quad currentSegmentation = 1
-
-	\quad for i = 2, i < j, i++ \quad // Find $OPT(j)$
-
-	\quad \quad if $OPT(i)$ + $quality(Segment(i+1, j) \geq$  currentQuality
-
-	\quad \quad \quad currentQuality = $OPT(i)$ + $quality(Segment(i+1, j)$
-
-	\quad \quad \quad currentSegmentation = i
-
-	\quad $OPT(j)$ = currentQuality
-
-	\quad $segmentations[j] = segmentations[i] + currentSegmentation$
-
-$return$ $OPT[n], segmentations$
-
-\underline{Running Time:} $O(n^2)$. Each character is compared to the $OPT$ values of all prior characters.
-
-\end{description}
-\end{proof}
 
 \newpage
 \linespread{1.1}
 \begin{Question} (6.28) 
-\renewcommand{\theenumi}{\alph{enumi}}
-\begin{enumerate}
-\item Every job in J can be completed before its deadline by definition, meaning there is a schedule where the max lateness is 0 Ordering by increasing deadline produces a schedulable set that minimizes max lateness (proven in class). Using this order will create a schedule that has max lateness 0 (we know that is the minimum max lateness). Therefore, there is a schedule for J where the jobs are ordered by increasing deadline. 
-\item Let the jobs be ordered by increasing deadline (we know J can have this ordering from part a. \par
-Simple observation: \par
-Given n jobs, the last job $j_n$ is either in J or not in J. If $j_n$ is in J, then the optimal solution is the optimal solution when given all the earlier jobs and a new maximum deadline D of the start time of $j_n$ (either $D-t_n$ or $d_n-t_n$, whichever is earlier). If $j_n$ is not in J, then the optimal solution is just the optimal solution given all the earlier jobs and the same max deadline. \par
-Subproblems: \par
-$OPT[i, d]$ is the optimum solution given jobs from 1 to i where no job can run past deadline d. \par
-Recurrence: \par
-$OPT[i, d]=max\left \{
-  \begin{array}{l}
-  OPT[i-1,d] \\
-  OPT[i-1, min(d,d_n)-t_i] + 1
-  \end{array}
-  \right.
-$\par
-Either you don't take $j_i$ in which case J doesn't get any bigger and you look at the subproblem without $j_i$ and the same max deadline, or you take $j_i$ in which case J becomes 1 bigger and you look at the subproblem without $j_i$ and a the new earlier max deadline. \par
-Full Algorithm:\par
-$OPT[0,d]=0, OPT[i,0]=0$ (can't have any jobs in J without any jobs, or without any time) \par
-You can fill in the table in any order (row by row, column by column, diagonally) and you can only choose to take $j_i$ if $d_i$ does not exceed $d$. \par
-The final solution is $OPT[n,d_n]$. \par
-The runtime for this algorithm is $O(n\cdot d)$ (there are $n \cdot d$ subproblems and each subproblem looks at a constant number of subproblems. 
-\end{enumerate}
 \end{Question}
 
 \end{document}  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

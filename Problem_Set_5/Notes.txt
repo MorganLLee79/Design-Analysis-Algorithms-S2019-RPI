@@ -1,0 +1,9 @@
+7-6: Ergonomic light switches; can every switch see a unique light switch, not blocked by wall
+-Issue: 1:1 switch:light
+-Make wall block = weight>1?
+-max flow, where:
+	-edges = every light to every switch
+		-capacity = 1 if no blocking wall/visible, cap = 0 if blocked/not visible
+	-check overall capacity = n (# lights and also # switches), apply flow algorithm
+		-TODO check won't be redundant, run time
+-Alt: Circulations, switchs = sources, lights = sinks, edges same as ^

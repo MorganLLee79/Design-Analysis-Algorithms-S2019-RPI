@@ -1,0 +1,58 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{amsmath}
+%\usepackage{setspace}
+%\usepackage{graphicx}
+%\usepackage{mathtools}
+%\usepackage{stackengine}
+
+\newtheorem{Question}{Question}
+\newtheorem{Algorithm}{Algorithm}
+\newtheorem{claim}{claim}
+%\graphicspath{ {} } %\includegraphics{name}
+
+\usepackage{geometry}
+\geometry{letterpaper, portrait, margin=1in}
+
+\title {Design and Analysis of Algorithms Assignment 4}
+\author{Harrison Lee, Alex Zhao}
+\date{February 22, 2019}
+
+\begin{document}
+
+\maketitle
+
+\begin{Question} (7.6) Lightswitch Mapping \\
+\end{Question}
+\noindent We are given $n$ light fixtures and $n$ light switches in a house. We are also given a subroutine that determines in $O(1)$ time whether two lines intersect.\\
+We can use this subroutine to determine in $O(1)$ time if a wall is blocking a fixture and switch pair by inputting the wall as one line segment and the fixture and switchs' coordinates as the end points of the other line segment input. \\
+\noindent Give an algoirthm that determines if a given floor plan is ergonomic, or can be mapped so all light fixtures are visible with all light switches, in polynomial $n$ and $m$ time.
+
+\begin{Algorithm}
+Determine in $O(mn)$ time if the given floor plan can be ergonomic.
+\end{Algorithm}
+
+\begin{proof}
+\begin{description}
+
+First, make a bipartite graph of all $n$ switches to all $n$ fixtures. Define edges as all pairs of switches and fixtures that are visible, with capacities of 1. Pairs that are not visible to each other effectively have 0 capacity or no edge.\\
+Next, create source and sink nodes, connecting them to all switch and fixture nodes respectively with edges of capacity 1, to simulate supplies and demands of 1 light fixture control connection. \\
+This graph is ready for Ford-Fulkerson to be run on it, as discussed in lecture.
+
+\underline{Running Time:} Making initial bipartite graph: $n^2$ for making each node and checking its visibility with each other node, times $m*1$ for checking against each other wall using the given $O(1)$ function. Initial total runtime of $O(n^2 m)$.\\
+Creating the source and sink node links can be done at the same time the $n$ switches and fixtures are initialized, so they shouldn't have a significant impact on run time. \\
+Ford-Fulkerson runs in $O( \#edges * max_flow)$. Max flow is 1, as all edges are given that value. There are at most $n*(n+2)$ edges, as each fixture-switch pair can share an edge, in addition to the edges connecting the source and sink nodes. These result in an added $O(n^2)$. \\
+Total runtime = $O(n^2 m + n^2) = O(n^2 m)$.
+
+\end{description}
+\end{proof}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\linespread{1.1}
+\begin{Question} (6.28) 
+\end{Question}
+
+\end{document}  

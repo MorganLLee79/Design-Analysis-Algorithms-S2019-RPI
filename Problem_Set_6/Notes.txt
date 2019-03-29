@@ -1,6 +1,11 @@
 Problem Set 6: Ch. 7 Problems 28, 45
 
 Q 7-28: (p. 431-433)
+a) Like airline scheduling problem?
+b) Add min flows to above?
 
+-It's the arbitrary parameters/requirements problem
+-wrote in notebook, basically a bunch of min flows and capacities
 
 Q 7-45: (p. 444)
+Alex is doing

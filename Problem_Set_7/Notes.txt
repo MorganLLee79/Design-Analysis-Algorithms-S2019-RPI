@@ -1,0 +1,16 @@
+Problem Set 8: NP and Computational Intractability
+-Show both NP complete (solve using an NP function)
+
+Ch 8 P6: (p. 507) Minimal Monotone Satisfiability
+-Look at original example of satisfiability, also turn into a graph again
+-reduce original satisfiability graph to smaller one
+-!= 3-sat?
+-minimal coverage?
+	clauses = nodes, edges = matching variables
+
+-Given clauses C-1...C_k, and bool variables x_1...x_n
+
+
+Ch 8 P14: (p. 512) Multiple Interval Scheduling
+-Each job requires two separate hours (10am-11am + 2pm-3pm; 11am-2pm free)
+-Given set of n jobs; given number k, accept at least k jobs with no overlaps?
